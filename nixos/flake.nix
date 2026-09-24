@@ -7,7 +7,7 @@
   };
 
   outputs = { self, nixpkgs, cursor-flake, ... }@inputs: {
-    nixosConfigurations.yourHostname = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux"; # Adjust if you are on aarch64-linux
       specialArgs = { inherit inputs; }; # This passes inputs to configuration.nix
       modules = [ ./configuration.nix ];

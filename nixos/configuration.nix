@@ -104,7 +104,7 @@
      nwg-look
      gtk4
      git
-     zed
+     zed-editor
      inputs.cursor-flake.packages.${pkgs.system}.default
   ];
 
