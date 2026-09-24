@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -98,13 +98,14 @@
      vim 
      wget
      hyprland
-     kitty
+     foot
      waybar
      wofi
      nwg-look
      gtk4
      git
      zed
+     inputs.cursor-flake.packages.${pkgs.system}.default
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
