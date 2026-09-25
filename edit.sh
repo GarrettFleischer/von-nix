@@ -1,0 +1,1 @@
+vi ./nixos/configuration.nix
