@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   home.packages = with pkgs; [
     # Toolchains used from the shell, not only inside the editor.
@@ -6,7 +6,8 @@
     cargo
     clippy
     rustfmt
-    clang
+    # Both compiler wrappers install bin/c++. Clang owns the shared names.
+    (lib.hiPrio clang)
     gcc
     cmake
     ninja
