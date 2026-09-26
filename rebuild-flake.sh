@@ -1,1 +1,1 @@
-sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos/#nixos
+sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos#nixos

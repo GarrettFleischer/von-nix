@@ -9,7 +9,7 @@
     enable = true;
     shellAliases = {
       btw = "echo i use nixos btw";
-      nrs = "sudo nixos-rebuild switch -I nixos-config=/home/von/dotfiles/nixos/configuration.nix && source ~/.bashrc";
+      nrs = "sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
       nec = "vi /home/von/dotfiles/nixos/configuration.nix";
       neh = "vi /home/von/dotfiles/nixos/home.nix";
     };
@@ -20,6 +20,84 @@
   };
 
   home.packages = with pkgs; [
+    alacritty
     bat
+    xdg-utils
   ];
+
+  # ~/.config/niri/config.kdl
+  xdg.configFile."niri/config.kdl".text = ''
+    // Basic Niri configuration. Noctalia starts with this session only.
+    spawn-at-startup "noctalia"
+
+    input {
+        keyboard {
+            xkb {
+                layout "us"
+            }
+        }
+        touchpad {
+            tap
+            dwt
+        }
+    }
+
+    output "eDP-1" {
+        mode "1920x1080@60.000"
+        scale 1.0
+    }
+
+    binds {
+        Mod+Return { spawn "alacritty"; }
+        Mod+Q { close-window; }
+        Mod+Shift+E { quit; }
+
+        Mod+D hotkey-overlay-title="Run Application Launcher" {
+            spawn-sh "noctalia msg panel-toggle launcher";
+        }
+        Mod+S hotkey-overlay-title="Control Center" {
+            spawn-sh "noctalia msg panel-toggle control-center";
+        }
+        Mod+Comma hotkey-overlay-title="Noctalia Settings" {
+            spawn-sh "noctalia msg settings-toggle";
+        }
+        Super+Alt+L hotkey-overlay-title="Lock Screen" {
+            spawn-sh "noctalia msg session lock";
+        }
+
+        Mod+Left  { focus-column-left; }
+        Mod+Right { focus-column-right; }
+        Mod+Up    { focus-window-up; }
+        Mod+Down  { focus-window-down; }
+
+        Mod+Shift+Left  { move-column-left; }
+        Mod+Shift+Right { move-column-right; }
+    }
+
+    layout {
+        gaps 8
+        default-column-width { proportion 0.5; }
+    }
+
+    window-rule {
+        geometry-corner-radius 20
+        clip-to-geometry true
+    }
+
+    window-rule {
+        match app-id="dev.noctalia.Noctalia"
+        open-floating true
+        default-column-width { fixed 1080; }
+        default-window-height { fixed 920; }
+    }
+
+    debug {
+        honor-xdg-activation-with-invalid-serial
+    }
+
+    layer-rule {
+        match namespace="^noctalia-backdrop"
+        place-within-backdrop true
+    }
+  '';
 }

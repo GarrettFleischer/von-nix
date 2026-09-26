@@ -2,21 +2,20 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, ... }:
-let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
-in
+{ config, lib, pkgs, ... }:
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      (import "${home-manager}/nixos")
     ];
 
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "backup";
-  home-manager.users.von = import ./home.nix;
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
+  };
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
@@ -85,7 +84,7 @@ in
   users.users."von" = {
     isNormalUser = true;
     description = "von";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -99,6 +98,16 @@ in
 
 
   programs.hyprland.enable = true;
+
+  # Niri session for GDM. Noctalia is started from the Niri config, not from
+  # a systemd user service, so it does not also launch inside the GNOME session.
+  programs.niri.enable = true;
+
+  programs.noctalia = {
+    enable = true;
+    # NetworkManager, Bluetooth, UPower, and a power-profile service.
+    recommendedServices.enable = true;
+  };
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -117,6 +126,7 @@ in
      cursor-cli
      fastfetch
      gh
+     xwayland-satellite
   ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   # Some programs need SUID wrappers, can be configured further or are
