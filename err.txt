@@ -1,22 +1,4 @@
-20:49:44 von in ~ $ nrs
-[sudo] password for von: 
-do you want to allow configuration setting 'extra-substituters' to be set to 'https://noctalia.cachix.org' (y/N)? y
-do you want to permanently mark this value as trusted (y/N)? y
-do you want to allow configuration setting 'extra-trusted-public-keys' to be set to 'noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=' (y/N)? y
-do you want to permanently mark this value as trusted (y/N)? y
-warning: creating lock file "/home/von/dotfiles/nixos/flake.lock": 
-• Added input 'home-manager':
-    'github:nix-community/home-manager/7b4c5ec4bedaf1e062bbc1bcaeddbc6bd242aa1b?narHash=sha256-iQ0ebhiVo64NktTnwft9hNxlFu4j5cvljVxyJaEVIP4%3D' (2026-09-25)
-• Added input 'home-manager/nixpkgs':
-    follows 'nixpkgs'
-• Added input 'nixpkgs':
-    'github:nixos/nixpkgs/e94cb152ed51bd6e24eb4a41f1460252beb52cd2?narHash=sha256-VVTPf%2BHyd5ebpjBMHmrLMSBIeW6ls48Bqtosj7CNKLA%3D' (2026-09-25)
-• Added input 'noctalia':
-    'github:noctalia-dev/noctalia/be43d120fae7f3bbe39651f9c91dafcf551f2312?narHash=sha256-oizJ2ro1mdw9YAVeRt5eKpTTBhyn%2BVI91VmL7Vqv/d0%3D' (2026-09-26)
-• Added input 'noctalia/nixpkgs':
-    'https://releases.nixos.org/nixos/unstable/nixos-26.11pre1076192.20b1ddd1aa5a/nixexprs.tar.zst?narHash=sha256-BMbikTjbh5H7ac/OjwGoJrlooh4dgNqhs51ABM83M7g%3D' (2026-09-19)
 building the system configuration...
-warning: Git tree '/home/von/dotfiles' is dirty
 error:
        … while calling the 'head' builtin
          at «github:nixos/nixpkgs/e94cb152ed51bd6e24eb4a41f1460252beb52cd2?narHash=sha256-VVTPf%2BHyd5ebpjBMHmrLMSBIeW6ls48Bqtosj7CNKLA%3D»/lib/attrsets.nix:1729:13:
@@ -60,18 +42,17 @@ error:
 
        … while evaluating definitions from `/nix/store/da7apr6rx9mpa0ljpircmwwsxnmrjb43-source/modules/misc/fontconfig.nix':
 
-       … while evaluating the option `home-manager.users.von.programs.neovim.extraWrapperArgs':
+       … while evaluating the option `home-manager.users.von.programs.neovim.extraPackages':
 
-       … while evaluating definitions from `/nix/store/ca1qngd8a2ij1787d2hpfkpmq88dbvmv-source/nixos/neovim.nix':
+       … while evaluating definitions from `/nix/store/vzwincai41xqga5n2gnvwssnpy31l22d-source/nixos/neovim.nix':
 
        (stack trace truncated; use '--show-trace' to show the full, detailed trace)
 
-       error: attribute 'rust-src' missing
-       at /home/von/dotfiles/nixos/neovim.nix:37:10:
-           36|       "RUST_SRC_PATH"
-           37|       "${pkgs.rust-src}/lib/rustlib/src/rust/library"
-             |          ^
-           38|     ];
+       error: undefined variable 'codelldb'
+       at /home/von/dotfiles/nixos/neovim.nix:68:7:
+           67|       # Debuggers
+           68|       codelldb
+             |       ^
+           69|       vscode-js-debug
 Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/von/dotfiles/nixos#nixosConfigurations."nixos".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
-20:50:45 von in ~ $ 
 
