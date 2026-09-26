@@ -59,13 +59,14 @@
       # Formatters and linters
       prettier
       stylua
-      nixfmt-rfc-style
+      nixfmt
       shfmt
       gofumpt
       shellcheck
       eslint
       # Debuggers
-      codelldb
+      # There is no top-level codelldb package. This adapter provides bin/codelldb.
+      vscode-extensions.vadimcn.vscode-lldb.adapter
       vscode-js-debug
       delve
       (python3.withPackages (ps: [ ps.debugpy ]))
