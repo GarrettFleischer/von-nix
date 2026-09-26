@@ -131,7 +131,7 @@
       vim-tmux-navigator
     ];
 
-    extraLuaConfig = ''
+    initLua = ''
       require("von")
     '';
   };
