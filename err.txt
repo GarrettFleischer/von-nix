@@ -1,58 +1,32 @@
-building the system configuration...
-error:
-       … while calling the 'head' builtin
-         at «github:nixos/nixpkgs/e94cb152ed51bd6e24eb4a41f1460252beb52cd2?narHash=sha256-VVTPf%2BHyd5ebpjBMHmrLMSBIeW6ls48Bqtosj7CNKLA%3D»/lib/attrsets.nix:1729:13:
-         1728|           if length values == 1 || pred here (elemAt values 1) (head values) then
-         1729|             head values
-             |             ^
-         1730|           else
-
-       … while evaluating the attribute 'value'
-         at «github:nixos/nixpkgs/e94cb152ed51bd6e24eb4a41f1460252beb52cd2?narHash=sha256-VVTPf%2BHyd5ebpjBMHmrLMSBIeW6ls48Bqtosj7CNKLA%3D»/lib/modules.nix:1181:7:
-         1180|     // {
-         1181|       value = addErrorContext "while evaluating the option `${showOption loc}':" (
-             |       ^
-         1182|         # Apply the 'apply' function to the merged value. This allows options to
-
-       … while evaluating the option `system.build.toplevel':
-
-       … while evaluating definitions from `/nix/store/2s013d7g7sna6rls7nk0yy8343h6mdiw-source/nixos/modules/system/activation/top-level.nix':
-
-       … while evaluating the option `warnings':
-
-       … while evaluating definitions from `/nix/store/2s013d7g7sna6rls7nk0yy8343h6mdiw-source/nixos/modules/system/boot/systemd.nix':
-
-       … while evaluating the option `systemd.services.home-manager-von.serviceConfig':
-
-       … while evaluating definitions from `/nix/store/da7apr6rx9mpa0ljpircmwwsxnmrjb43-source/nixos':
-
-       … while evaluating the option `home-manager.users.von.home.file."/home/von/.config/fontconfig/conf.d/10-hm-fonts.conf".source':
-
-       … while evaluating definitions from `/nix/store/da7apr6rx9mpa0ljpircmwwsxnmrjb43-source/modules/misc/xdg':
-
-       … while evaluating the option `home-manager.users.von.xdg.configFile."fontconfig/conf.d/10-hm-fonts.conf".source':
-
-       … while evaluating definitions from `/nix/store/da7apr6rx9mpa0ljpircmwwsxnmrjb43-source/modules/misc/fontconfig.nix':
-
-       … while evaluating the option `home-manager.users.von.fonts.fontconfig.configFile.fonts.source':
-
-       … while evaluating definitions from `/nix/store/da7apr6rx9mpa0ljpircmwwsxnmrjb43-source/modules/misc/fontconfig.nix':
-
-       … while evaluating the option `home-manager.users.von.fonts.fontconfig.configFile.fonts.settings':
-
-       … while evaluating definitions from `/nix/store/da7apr6rx9mpa0ljpircmwwsxnmrjb43-source/modules/misc/fontconfig.nix':
-
-       … while evaluating the option `home-manager.users.von.programs.neovim.extraPackages':
-
-       … while evaluating definitions from `/nix/store/vzwincai41xqga5n2gnvwssnpy31l22d-source/nixos/neovim.nix':
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: undefined variable 'codelldb'
-       at /home/von/dotfiles/nixos/neovim.nix:68:7:
-           67|       # Debuggers
-           68|       codelldb
-             |       ^
-           69|       vscode-js-debug
+evaluation warning: von profile: The option `programs.neovim.extraLuaConfig' defined in `/nix/store/z6xgy5z1ajrm1sw38m44g7yrgj5gjmnh-source/nixos/neovim.nix' has been renamed to `programs.neovim.initLua'.
+error: Cannot build '/nix/store/2pgh7nyncz2gn5amlnlxhpkslnpl52q0-home-manager-path.drv'.
+       Reason: builder failed with exit code 25.
+       Output paths:
+         /nix/store/mi84if7sbmf7add2l4hqygxv5scrbgdd-home-manager-path
+       Last 6 log lines:
+       > structuredAttrs is enabled
+       > pkgs.buildEnv error: two given paths contain a conflicting subpath:
+       >   `/nix/store/z4c6k0mrlkwl3s4w9ysxc8vq1wylm3ms-gcc-wrapper-15.3.0/bin/c++' and
+       >   `/nix/store/mn2y6cydn5phwf2hxgfc3n7zjf48d5xg-clang-wrapper-21.1.8/bin/c++'
+       > hint: this may be caused by two different versions of the same package in buildEnv's `paths` parameter
+       > hint: `pkgs.nix-diff` can be used to compare derivations
+       For full logs, run:
+         nix log /nix/store/2pgh7nyncz2gn5amlnlxhpkslnpl52q0-home-manager-path.drv
+error: Cannot build '/nix/store/72d4zscy7lqrj8b40wil59ngb58ihaij-home-manager-generation.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/vk0iq68xsxqs4k7jv7p1nwv9rk5d8s23-home-manager-generation
+error: Cannot build '/nix/store/8bd4fw5isq1avbaaznw4mhq9nkj36xma-user-environment.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/gi5qaapj9vxbvq7kp54lpgnlxm8nh1pz-user-environment
+error: Cannot build '/nix/store/s35239dalywldwsqyax5zacv571c3i15-etc.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/xdf826wazymqi0844r28llm0d5z7djrx-etc
+error: Cannot build '/nix/store/msdl6ckngxs0qkka8028kb1yjvqdja9a-nixos-system-nixos-26.11.20260925.e94cb15.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/dg2n9m0ahhd0nlbwqw258gqhmkxrf3g5-nixos-system-nixos-26.11.20260925.e94cb15
 Command 'nix --extra-experimental-features 'nix-command flakes' build --print-out-paths '/home/von/dotfiles/nixos#nixosConfigurations."nixos".config.system.build.toplevel' --no-link' returned non-zero exit status 1.
 
