@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./neovim.nix ];
+  imports = [
+    ./neovim.nix
+    ./tmux.nix
+  ];
 
   home.username = "von";
   home.homeDirectory = "/home/von";

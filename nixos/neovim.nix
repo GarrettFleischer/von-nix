@@ -126,6 +126,7 @@
       tokyonight-nvim
       vim-sleuth
       undotree
+      vim-tmux-navigator
     ];
 
     extraLuaConfig = ''
