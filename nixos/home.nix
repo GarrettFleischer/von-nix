@@ -9,18 +9,19 @@
   home.username = "von";
   home.homeDirectory = "/home/von";
   home.stateVersion = "26.11";
-  
+
   programs.bash = {
     enable = true;
     shellAliases = {
+      vi = "nvim";
       btw = "echo i use nixos btw";
       nrs = "sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
-      nec = "vi /home/von/dotfiles/nixos/configuration.nix";
-      neh = "vi /home/von/dotfiles/nixos/home.nix";
+      nec = "nvim /home/von/dotfiles/nixos/configuration.nix";
+      neh = "nvim /home/von/dotfiles/nixos/home.nix";
     };
 
-    initExtra= ''
-     PS1='\t \[\e[38;5;34m\]\u\[\e[0m\] in \[\e[38;5;33m\]\w\[\e[0m\] \\$ ' 
+    initExtra = ''
+      PS1='\t \[\e[38;5;34m\]\u\[\e[0m\] in \[\e[38;5;33m\]\w\[\e[0m\] \\$ ' 
     '';
   };
 
@@ -70,17 +71,17 @@
             spawn-sh "noctalia msg session lock";
         }
 
-        Mod+Left  { focus-column-left; }
-        Mod+Right { focus-column-right; }
-        Mod+Up    { focus-window-up; }
-        Mod+Down  { focus-window-down; }
+        Mod+h  { focus-column-left; }
+        Mod+l { focus-column-right; }
+        Mod+k    { focus-window-up; }
+        Mod+j  { focus-window-down; }
 
-        Mod+Shift+Left  { move-column-left; }
-        Mod+Shift+Right { move-column-right; }
+        Mod+Shift+h  { move-column-left; }
+        Mod+Shift+l { move-column-right; }
     }
 
     layout {
-        gaps 8
+        gaps 2
         default-column-width { proportion 0.5; }
     }
 
