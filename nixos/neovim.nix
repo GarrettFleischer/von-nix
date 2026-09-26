@@ -34,7 +34,7 @@
     extraWrapperArgs = [
       "--set"
       "RUST_SRC_PATH"
-      "${pkgs.rust-src}/lib/rustlib/src/rust/library"
+      "${pkgs.rustPlatform.rustLibSrc}"
     ];
 
     extraPackages = with pkgs; [
