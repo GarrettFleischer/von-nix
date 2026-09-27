@@ -54,7 +54,7 @@
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+# services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -97,7 +97,6 @@
   nixpkgs.config.allowUnfree = true;
 
 
-  programs.hyprland.enable = true;
 
   # Niri session for GDM. Noctalia is started from the Niri config, not from
   # a systemd user service, so it does not also launch inside the GNOME session.
@@ -109,14 +108,18 @@
     recommendedServices.enable = true;
   };
 
+
+  # VMware guest additions (shared clipboard, shared folders, seamless, time sync).
+  # See https://wiki.nixos.org/wiki/VMware
+  # Note: file copy/paste + drag only work on Xorg, not Wayland (niri).
+  virtualisation.vmware.guest.enable = true;
+
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
      vim 
      wget
-     hyprland
      foot
-     waybar
      wofi
      nwg-look
      gtk4
@@ -127,8 +130,8 @@
      fastfetch
      gh
      xwayland-satellite
+     devenv
   ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

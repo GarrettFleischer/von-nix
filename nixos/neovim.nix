@@ -6,9 +6,9 @@
     cargo
     clippy
     rustfmt
-    # Both compiler wrappers install bin/c++. Clang owns the shared names.
+    # Clang owns the shared cc/c++ names. A second compiler wrapper
+    # would make pkgs.buildEnv conflict on bin/cc and bin/c++.
     (lib.hiPrio clang)
-    gcc
     cmake
     ninja
     gnumake

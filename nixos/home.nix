@@ -28,16 +28,22 @@
   home.packages = with pkgs; [
     alacritty
     bat
+    fuzzel
+    swaybg
     xdg-utils
   ];
 
   # ~/.config/niri/config.kdl
   xdg.configFile."niri/config.kdl".text = ''
-    // Basic Niri configuration. Noctalia starts with this session only.
+    // Riced Niri configuration (Tony's "niri-btw").
+    // Noctalia starts with this session only.
     spawn-at-startup "noctalia"
+    prefer-no-csd
 
     input {
         keyboard {
+            repeat-delay 200
+            repeat-rate 35
             xkb {
                 layout "us"
             }
@@ -46,6 +52,7 @@
             tap
             dwt
         }
+        focus-follows-mouse max-scroll-amount="0%"
     }
 
     output "eDP-1" {
@@ -53,8 +60,12 @@
         scale 1.0
     }
 
+    workspace "a"
+    workspace "b"
+    workspace "c"
+
     binds {
-        Mod+Return { spawn "alacritty"; }
+        Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
         Mod+Q { close-window; }
         Mod+Shift+E { quit; }
 
@@ -78,15 +89,31 @@
 
         Mod+Shift+h  { move-column-left; }
         Mod+Shift+l { move-column-right; }
+
+        Mod+Shift+1 { move-column-to-workspace "a"; }
+        Mod+Shift+2 { move-column-to-workspace "b"; }
+        Mod+Shift+3 { move-column-to-workspace "c"; }
+        Mod+Shift+4 { move-column-to-workspace "a"; }
+        Mod+Shift+5 { move-column-to-workspace "b"; }
+        Mod+Shift+6 { move-column-to-workspace "c"; }
+        Mod+Shift+7 { move-column-to-workspace "a"; }
+        Mod+Shift+8 { move-column-to-workspace "b"; }
+        Mod+Shift+9 { move-column-to-workspace "c"; }
     }
 
     layout {
-        gaps 2
+        gaps 5
         default-column-width { proportion 0.5; }
+        focus-ring {
+            width 1.5
+            active-color "#7fc8ff"
+            inactive-color "#505050"
+        }
+        border { off; }
     }
 
     window-rule {
-        geometry-corner-radius 20
+        geometry-corner-radius 4
         clip-to-geometry true
     }
 
@@ -105,5 +132,22 @@
         match namespace="^noctalia-backdrop"
         place-within-backdrop true
     }
+  '';
+
+  # ~/.config/noctalia/config.toml
+  xdg.configFile."noctalia/config.toml".text = ''
+    [theme]
+    mode = "dark"
+    source = "builtin"
+    builtin = "Tokyo-Night"
+
+    [shell]
+    font_family = "JetBrainsMono Nerd Font Propo"
+
+    [wallpaper]
+    directory = "~/.config/wallpapers"
+
+    [backdrop]
+    enabled = true
   '';
 }
