@@ -230,11 +230,11 @@
     # When left/right, thickness = bar width in px.
     [bar.main]
     position           = "left"
-    thickness          = 60           # bar width
+    thickness          = 40           # bar width (was 60)
     background_opacity = 0.85         # glass bar: semi-transparent so wallpaper shows through
     radius             = 12
     margin_ends        = 180
-    margin_edge        = 10
+    margin_edge        = 0            # flush to screen edge — no gap for windows to sneak into
     padding            = 14
     widget_spacing     = 6
     scale              = 1.0
