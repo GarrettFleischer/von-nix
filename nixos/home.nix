@@ -232,8 +232,8 @@
     position           = "left"
     thickness          = 40           # bar width (was 60)
     background_opacity = 0.85         # glass bar: semi-transparent so wallpaper shows through
-    radius             = 12
-    margin_ends        = 180
+    radius             = 6
+    margin_ends        = 0            # full-height bar — no inset from top/bottom
     margin_edge        = 0            # flush to screen edge — no gap for windows to sneak into
     padding            = 14
     widget_spacing     = 6
