@@ -9,6 +9,8 @@
   imports = [
     ./neovim.nix
     ./tmux.nix
+    inputs.hermes-agent.homeManagerModules.default
+    ./hermes.nix
     inputs.zen-browser.homeModules.beta
   ];
 

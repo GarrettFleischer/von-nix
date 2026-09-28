@@ -18,6 +18,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hermes-agent.url = "github:NousResearch/hermes-agent";
+
     # Pin the cachix branch and do not follow nixpkgs. Following nixpkgs
     # changes the derivation hash and misses Noctalia's binary cache.
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
