@@ -133,7 +133,7 @@
     }
 
     layout {
-        gaps 5
+        gaps 0
         default-column-width { proportion 0.5; }
         always-center-single-column
         focus-ring {
