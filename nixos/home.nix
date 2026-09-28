@@ -38,6 +38,7 @@
   home.packages = with pkgs; [
     alacritty
     bat
+    bibata-cursors
     fuzzel
     swaybg
     xdg-utils
@@ -47,6 +48,13 @@
   programs.zen-browser = {
     enable = true;
     setAsDefaultBrowser = true;
+  };
+
+  # Cursor theme environment — fixes the double-cursor issue (no theme was
+  # installed; bibata-cursors is now in home.packages above).
+  home.sessionVariables = {
+    XCURSOR_THEME = "Bibata-Modern-Ice";
+    XCURSOR_SIZE = "24";
   };
 
   # ~/.config/niri/config.kdl
@@ -68,7 +76,10 @@
             tap
             dwt
         }
-        focus-follows-mouse max-scroll-amount="0%"
+    }
+
+    cursor {
+        hide-after-inactive-ms 1000
     }
 
     output "eDP-1" {
@@ -82,6 +93,9 @@
 
     binds {
         Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+        Mod+B hotkey-overlay-title="Open Browser (Workspace 2)" {
+            spawn-sh "niri msg focus-workspace b; spawn zen-browser";
+        }
         Mod+Q { close-window; }
         Mod+Shift+E { quit; }
 
@@ -211,6 +225,30 @@
     # Frosted-glass shell: semi-transparent bar/launcher/cards over the wallpaper.
     transparency_mode = "glass"
 
+    # ── Bar: vertical on the left side ──
+    # position | top | bottom | left | right
+    # When left/right, thickness = bar width in px.
+    [bar.main]
+    position           = "left"
+    thickness          = 60           # bar width
+    background_opacity = 0.85         # glass bar: semi-transparent so wallpaper shows through
+    radius             = 12
+    margin_ends        = 180
+    margin_edge        = 10
+    padding            = 14
+    widget_spacing     = 6
+    scale              = 1.0
+    font_scale         = 1.0
+    shadow             = true
+    auto_hide          = false
+    reserve_space      = true
+    capsule            = false
+
+    # left-bar widget flow: top-to-bottom sections
+    start  = ["launcher", "wallpaper", "workspaces"]
+    center = ["clock"]
+    end    = ["media", "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "control-center", "session"]
+
     [wallpaper]
     directory = "~/.config/wallpapers"
 
@@ -219,4 +257,304 @@
     blur_intensity = 0.7
     tint_intensity = 0.2
   '';
+
+  # ── GTK theme: Tokyo-Night palette + glass transparency for Thunar ──
+  # Why: Noctalia's compositor does the blur, but GTK widgets are opaque
+  # by default, so the wallpaper never shows through Thunar.
+  #
+  # How:
+  #   • Global GTK settings point GTK3/4 apps at adwaita-dark (a real
+  #     theme that matches the dark surface stack), then layer a user
+  #     override stylesheet (gtk.css) on top.
+  #   • The override sets semi-transparent backgrounds on windows, sidebar
+  #     and view panels so Noctalia's backdrop blur paints behind them.
+  #   • Tokyo-Night colors are pulled from the same palette Noctalia itself
+  #     uses (surface = #1e1b2e, surface_container = #241f3d).
+
+  # ~/.config/gtk-3.0/settings.ini
+  xdg.configFile."gtk-3.0/settings.ini".text = ''
+    [Settings]
+    gtk-theme-name=Adwaita-dark
+    gtk-application-prefer-dark-theme=true
+    gtk-cursor-theme-name=Bibata-Modern-Ice
+    gtk-cursor-theme-size=24
+    gtk-toolbar-style=GTK_TOOLBAR_ICONS
+    gtk-icon-theme-name=Adwaita
+  '';
+
+  # ~/.config/gtk-3.0/gtk.css — glass + Tokyo-Night
+  xdg.configFile."gtk-3.0/gtk.css".text = ''
+    /* ── Colors (Tokyo-Night, matching Noctalia's surface stack) ── */
+    :root {
+      --bg:        #1e1b2e;
+      --bg-alpha:  rgba(30, 27, 46, 0.60);
+      --panel:     #241f3d;
+      --panel-alpha: rgba(36, 31, 61, 0.55);
+      --fg:        #cdd6f4;
+      --fg-dim:    #9399b2;
+      --accent:    #7fc8ff;
+      --selected:  #7fc8ff;
+      --border:    rgba(127, 200, 255, 0.18);
+    }
+
+    /* ── Global window: let the wallpaper show through ── */
+    window {
+      background-color: var(--bg-alpha);
+      color:            var(--fg);
+    }
+
+    /* ── Header bar (Thunar window title + toolbar) ── */
+    .header-bar,
+    .titlebar,
+    .titlebar-backdrop {
+      background-color: var(--panel-alpha);
+      color:            var(--fg);
+      border-bottom:    1px solid var(--border);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar,
+    .sidebar .row,
+    #sidebar-tree,
+    .sidebar-button {
+      background-color: var(--panel-alpha);
+      color:            var(--fg);
+    }
+
+    .sidebar .row:selected,
+    .sidebar .row:active {
+      background-color: rgba(127, 200, 255, 0.20);
+      color:            var(--fg);
+    }
+
+    /* ── Main view / file list ── */
+    .view,
+    .view:selected,
+    .cell,
+    .cell:selected,
+    .treeview {
+      background-color: var(--bg-alpha);
+      color:            var(--fg);
+    }
+
+    .view:selected,
+    .cell:selected {
+      background-color: rgba(127, 200, 255, 0.18);
+      color:            var(--fg);
+    }
+
+    /* ── Buttons & entries ── */
+    button,
+    .button,
+    entry,
+    .entry {
+      background-color: var(--panel-alpha);
+      color:            var(--fg);
+      border:           1px solid var(--border);
+      border-radius:    8px;
+    }
+
+    button:hover,
+    .button:hover {
+      background-color: rgba(127, 200, 255, 0.12);
+    }
+
+    /* ── Menus / popovers ── */
+    menu,
+    .menu,
+    .popover {
+      background-color: var(--bg-alpha);
+      color:            var(--fg);
+      border:           1px solid var(--border);
+      border-radius:    8px;
+    }
+
+    .menuitem,
+    .menu .menuitem {
+      background-color: transparent;
+      color:            var(--fg);
+    }
+
+    .menuitem:hover {
+      background-color: rgba(127, 200, 255, 0.12);
+    }
+
+    /* ── Status bar / bottom panel ── */
+    .status-bar,
+    .statusbar {
+      background-color: var(--panel-alpha);
+      color:            var(--fg-dim);
+      border-top:       1px solid var(--border);
+    }
+
+    /* ── Scroll bars ── */
+    scrollbar,
+    .scrollbar {
+      background-color: var(--bg-alpha);
+    }
+
+    scrollbar slider,
+    .scrollbar slider {
+      background-color: var(--accent);
+      border-radius:    4px;
+    }
+
+    /* ── Selection in tree / list (e.g. file list) ── */
+    treeview row:selected,
+    .view row:selected,
+    .cell:selected {
+      background-color: rgba(127, 200, 255, 0.18);
+      color:            var(--fg);
+    }
+
+    /* ── Thunar-specific: path bar ── */
+    #pathbar-box,
+    .path-bar,
+    .path-bar button {
+      background-color: var(--panel-alpha);
+      color:            var(--fg);
+      border-bottom:    1px solid var(--border);
+    }
+
+    .path-bar button:hover {
+      background-color: rgba(127, 200, 255, 0.12);
+    }
+
+    /* ── Thunar-specific: location bar (Oxygen/Pathbar) ── */
+    #location-bar,
+    .entry.location {
+      background-color: var(--bg-alpha);
+      color:            var(--fg);
+      border:           1px solid var(--border);
+      border-radius:    8px;
+    }
+
+    /* ── Thunar-specific: places / shortcut view ── */
+    #places-view,
+    .sidebar .row.separator {
+      background-color: transparent;
+    }
+
+    .sidebar .row.separator {
+      border-color: var(--border);
+    }
+
+    /* ── Scrollbar groove / trough styling ── */
+    scrollbar trough,
+    .scrollbar trough {
+      background-color: transparent;
+    }
+
+    /* ── Print dialog / native dialogs ── */
+    dialog,
+    .dialog {
+      background-color: var(--bg-alpha);
+      color:            var(--fg);
+      border:           1px solid var(--border);
+      border-radius:    12px;
+    }
+
+    /* ── Overshoot / scrollable indicator ── */
+    .overshoot {
+      background:      none;
+    }
+
+    /* ── Ensure selection stays visible on hover ── */
+    :selected {
+      background-color: var(--selected);
+      color:            var(--fg);
+    }
+  '';
+
+  # ~/.config/gtk-4.0/gtk.css — same spirit, GTK4 syntax
+  xdg.configFile."gtk-4.0/gtk.css".text = ''
+    :root {
+      --accent-bg-color:    #7fc8ff;
+      --accent-fg-color:    #1e1b2e;
+      --window-bg-color:    rgba(30, 27, 46, 0.55);
+      --window-fg-color:    #cdd6f4;
+      --view-bg-color:      rgba(30, 27, 46, 0.55);
+      --view-fg-color:      #cdd6f4;
+      --headerbar-bg-color: rgba(36, 31, 61, 0.55);
+      --headerbar-fg-color: #cdd6f4;
+      --popover-bg-color:   rgba(30, 27, 46, 0.60);
+      --popover-fg-color:   #cdd6f4;
+      --card-bg-color:      rgba(36, 31, 61, 0.55);
+      --card-fg-color:      #cdd6f4;
+      --sidebar-bg-color:   rgba(36, 31, 61, 0.55);
+      --sidebar-fg-color:   #cdd6f4;
+      --sidebar-border-color: rgba(127, 200, 255, 0.20);
+      --shade-color:        rgba(0, 0, 0, 0.30);
+    }
+
+    /* glass for every top-level window */
+    window {
+      background-color: var(--window-bg-color);
+    }
+
+    headerbar {
+      background-color: var(--headerbar-bg-color);
+      color:            var(--headerbar-fg-color);
+      border-bottom:    1px solid rgba(127, 200, 255, 0.18);
+    }
+
+    sidebar {
+      background-color: var(--sidebar-bg-color);
+      color:            var(--sidebar-fg-color);
+      border-right:     1px solid var(--sidebar-border-color);
+    }
+
+    /* list / file view transparency */
+    .list,
+    .tree-view {
+      background-color: var(--view-bg-color);
+      color:            var(--view-fg-color);
+    }
+
+    /* selection */
+    .list-row:selected,
+    .tree-view-row:selected {
+      background-color: rgba(127, 200, 255, 0.20);
+      color:            var(--view-fg-color);
+    }
+
+    /* buttons */
+    button {
+      background-color: var(--card-bg-color);
+      color:            var(--card-fg-color);
+      border:           1px solid rgba(127, 200, 255, 0.18);
+      border-radius:    8px;
+    }
+
+    button:hover {
+      background-color: rgba(127, 200, 255, 0.12);
+    }
+
+    /* entries */
+    entry {
+      background-color: var(--window-bg-color);
+      color:            var(--window-fg-color);
+      border:           1px solid rgba(127, 200, 255, 0.18);
+      border-radius:    8px;
+    }
+
+    /* popover / menu */
+    popover {
+      background-color: var(--popover-bg-color);
+      color:            var(--popover-fg-color);
+      border:           1px solid rgba(127, 200, 255, 0.18);
+      border-radius:    8px;
+    }
+
+    /* scrollbar */
+    scrollbar {
+      background-color: var(--window-bg-color);
+    }
+
+    scrollbar slider {
+      background-color: var(--accent-bg-color);
+      border-radius:    4px;
+    }
+  '';
+
 }
