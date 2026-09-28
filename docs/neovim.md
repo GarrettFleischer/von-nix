@@ -1,4 +1,4 @@
-# von neovim — cheatsheet
+# neovim — cheatsheet
 
 - `vi` / `vim` / `vimdiff` aliases. Rebuild after config edits: `./rebuild.sh`.
 
@@ -109,8 +109,16 @@ Manual: `<sp>cf` (async, LSP fallback). On save: yes, 3 s timeout.
 - **which-key** — `<leader>` group hints: buffer, code, debug, find, git, hunk, search
 - **vim-tmux-navigator** — window nav via tmux
 - **vim-sleuth** — vim-style undo
-- **undotree**, **mini* family** (pairs, surround, ai), **nvim-web-devicons**
+- **undotree**, **mini\* family** (pairs, surround, ai), **nvim-web-devicons**
 
 ## Treesitter
 
 Grammar highlight + indent for: bash, c, cmake, css, dockerfile, go, html, javascript, json, lua, markdown, nix, python, query, regex, rust, scss, sql, toml, tsx, typescript, vim, yaml.
+
+## Related sheets
+
+- [niri keybinds & layout](niri.md)
+- [Noctalia desktop](noctalia.md)
+- [tmux](tmux.md)
+- [shell/system shortcuts](shortcuts.md)
+- [manuals](manuals.md)

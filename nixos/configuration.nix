@@ -59,6 +59,8 @@
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
 # services.desktopManager.gnome.enable = true;
+  # Enable SSH so the NixOS VM can be reached from the Windows host.
+  services.openssh.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -96,6 +98,20 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+
+  # Default file manager (GTK) for Noctalia + xfconf to persist its prefs.
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs; [
+      thunar-archive-plugin
+    ];
+  };
+
+  programs.xfconf.enable = true;
+
+  # Thunar extras: trash/mount (gvfs), thumbnails (tumbler).
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -145,9 +161,6 @@
   # };
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

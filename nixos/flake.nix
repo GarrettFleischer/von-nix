@@ -21,6 +21,15 @@
     # Pin the cachix branch and do not follow nixpkgs. Following nixpkgs
     # changes the derivation hash and misses Noctalia's binary cache.
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
+
+    # Zen browser (Firefox fork; prebuilt tarball, not in nixpkgs)
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
   };
 
   outputs =

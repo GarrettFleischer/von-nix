@@ -1,9 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
     ./neovim.nix
     ./tmux.nix
+    inputs.zen-browser.homeModules.beta
   ];
 
   home.username = "von";
@@ -33,6 +34,12 @@
     swaybg
     xdg-utils
   ];
+
+  # Zen as the default browser
+  programs.zen-browser = {
+    enable = true;
+    setAsDefaultBrowser = true;
+  };
 
   # ~/.config/niri/config.kdl
   xdg.configFile."niri/config.kdl".text = ''
@@ -124,6 +131,8 @@
     layout {
         gaps 5
         default-column-width { proportion 0.5; }
+        always-center-single-column
+        focus-scroll
         focus-ring {
             width 1.5
             active-color "#7fc8ff"
@@ -135,6 +144,21 @@
     window-rule {
         geometry-corner-radius 4
         clip-to-geometry true
+    }
+
+    window-rule {
+        // Frosted-glass: blur the wallpaper behind semi-transparent windows & popups.
+        // Opaque apps (Firefox, editors) are unaffected.
+        background-effect {
+            xray true
+            blur true
+        }
+        popups {
+            background-effect {
+                xray true
+                blur true
+            }
+        }
     }
 
     window-rule {
@@ -154,6 +178,21 @@
     }
   '';
 
+
+  # ~/.config/alacritty/alacritty.yml — frosted-glass terminal, Tokyo-Night.
+  # Semi-transparent so niri's xray/blur frosts the wallpaper behind it,
+  # in the same palette as Noctalia.
+  xdg.configFile."alacritty/alacritty.yml".text = ''
+    window:
+      decorations: false
+      title: false
+      border_width: 0
+      opacity: 0.9
+
+    colors:
+      primary: 0x1e1b2b
+      foreground: 0xc0c3ce
+  '';
   # ~/.config/noctalia/config.toml
   xdg.configFile."noctalia/config.toml".text = ''
     [theme]
@@ -163,11 +202,16 @@
 
     [shell]
     font_family = "JetBrainsMono Nerd Font Propo"
+    [shell.panel]
+    # Frosted-glass shell: semi-transparent bar/launcher/cards over the wallpaper.
+    transparency_mode = "glass"
 
     [wallpaper]
     directory = "~/.config/wallpapers"
 
     [backdrop]
     enabled = true
+    blur_intensity = 0.7
+    tint_intensity = 0.2
   '';
 }
