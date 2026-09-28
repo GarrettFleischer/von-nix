@@ -26,6 +26,7 @@
       nrs = "sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
       nec = "nvim /home/von/dotfiles/nixos/configuration.nix";
       neh = "nvim /home/von/dotfiles/nixos/home.nix";
+      sysupdate = "sudo nixos-rebuild switch --upgrade --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
     };
 
     initExtra = ''
