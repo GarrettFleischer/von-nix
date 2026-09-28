@@ -138,7 +138,7 @@
         always-center-single-column
         focus-ring {
             width 1.5
-            active-color "#ffffff40"
+            active-color "#ffffffff"
             inactive-color "#505050"
         }
         border { off; }
