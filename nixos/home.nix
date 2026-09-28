@@ -16,6 +16,7 @@
       vi = "nvim";
       btw = "echo i use nixos btw";
       nrs = "sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
+      nhs = "home-manager switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
       nec = "nvim /home/von/dotfiles/nixos/configuration.nix";
       neh = "nvim /home/von/dotfiles/nixos/home.nix";
     };
@@ -110,8 +111,8 @@
         Mod+Ctrl+U { move-column-to-workspace-down; }
         Mod+Ctrl+I { move-column-to-workspace-up; }
         // Consume or expel the focused window left/right.
-        Mod+[ { consume-or-expel-window-left; }
-        Mod+] { consume-or-expel-window-right; }
+        Mod+BracketLeft { consume-or-expel-window-left; }
+        Mod+BracketRight { consume-or-expel-window-right; }
         // Switch preset column width; maximize the column.
         Mod+R { switch-preset-column-width; }
         Mod+F { maximize-column; }
