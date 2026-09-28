@@ -20,7 +20,7 @@ These are remapped in `~/.config/niri/config.kdl` via `noctalia msg …`:
 | `Super+Alt+L` | **Lock the screen** (`noctalia msg session lock`) |
 
 Everything else follows Noctalia's default keybindings (GNOME-like). See the
-wiki below for the full set — don't trust a static list; `niri`'s hotkey
+docs below for the full set — don't trust a static list; `niri`'s hotkey
 overlay (`Mod+Shift+Slash`) shows the niri-side keys, and Noctalia's settings
 panel shows the desktop-side keys.
 
@@ -56,8 +56,33 @@ nhs        # home-manager switch (user-level changes)
 After a rebuild, lock/unlock or open the Noctalia settings to pick up theme
 and font changes.
 
+## How settings work (two layers)
+
+| Layer | Path | Who writes it |
+|---|---|---|
+| Base | `~/.config/noctalia/config.toml` | You (via `home.nix`) |
+| GUI overrides | `~/.local/state/noctalia/settings.toml` | Noctalia (Settings, setup flows, IPC) |
+
+Precedence: built-in defaults → your `*.toml` (sorted, merged) →
+`settings.toml`. **State wins per-key.** Both layers hot-reload, no
+restart needed.
+
+- UI changes are **not** written to `~/.config` and **survive every
+  rebuild** — Home Manager never touches `~/.local/state` (Noctalia's docs
+  call out NixOS read-only config as the use case).
+- Hand-edited keys the GUI has touched are shadowed; to check: temporarily
+  move `settings.toml` from the state dir, or run `noctalia config validate`
+  (newer versions flag overridden keys).
+- Snapshot UI settings into dotfiles:
+  ```sh
+  noctalia config export > /home/von/dotfiles/nixos/noctalia-ui-settings.toml
+  ```
+  (`config export` = explicit config + GUI overrides, built-in defaults
+  omitted; `config export full` includes them. Settings menu also has
+  "Export Config...".)
+
 ## References
 
-- Noctalia (repo + wiki): https://github.com/noctalia-dev/noctalia
-- Noctalia wiki (keybindings, themes, config): https://wiki.noctalia.org
+- Noctalia (repo + docs): https://github.com/noctalia-dev/noctalia
+- Noctalia docs (keybindings, themes, config): https://docs.noctalia.dev/noctalia/
 - Your live config: `~/.config/noctalia/config.toml`

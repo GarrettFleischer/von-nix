@@ -16,8 +16,8 @@ used on this system.
 - Your live config: `~/.config/niri/config.kdl` (see [docs/niri.md](niri.md))
 
 ## Desktop shell — Noctalia
-- Noctalia (repo + wiki): https://github.com/noctalia-dev/noctalia
-- Noctalia wiki (themes, keybindings, config): https://wiki.noctalia.org
+- Noctalia (repo + docs): https://github.com/noctalia-dev/noctalia
+- Noctalia docs (themes, keybindings, config): https://docs.noctalia.dev/noctalia/
 - Your live config: `~/.config/noctalia/config.toml` (see [docs/noctalia.md](noctalia.md))
 
 ## Browsers
