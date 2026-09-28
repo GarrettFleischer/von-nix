@@ -138,14 +138,14 @@
         always-center-single-column
         focus-ring {
             width 1.5
-            active-color "#7fc8ff"
+            active-color "#ffffff40"
             inactive-color "#505050"
         }
         border { off; }
     }
 
     window-rule {
-        geometry-corner-radius 4
+        geometry-corner-radius 0
         clip-to-geometry true
     }
 
