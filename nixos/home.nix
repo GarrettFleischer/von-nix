@@ -99,6 +99,25 @@
         Mod+Shift+7 { move-column-to-workspace "a"; }
         Mod+Shift+8 { move-column-to-workspace "b"; }
         Mod+Shift+9 { move-column-to-workspace "c"; }
+        // Open the Overview (zoomed-out view of workspaces and windows).
+        Mod+O repeat=false { toggle-overview; }
+        // Show the "Important Hotkeys" overlay.
+        Mod+Shift+Slash { show-hotkey-overlay; }
+        // Switch workspace up/down.
+        Mod+U { focus-workspace-down; }
+        Mod+I { focus-workspace-up; }
+        // Move the focused column to the workspace up/down.
+        Mod+Ctrl+U { move-column-to-workspace-down; }
+        Mod+Ctrl+I { move-column-to-workspace-up; }
+        // Consume or expel the focused window left/right.
+        Mod+[ { consume-or-expel-window-left; }
+        Mod+] { consume-or-expel-window-right; }
+        // Switch preset column width; maximize the column.
+        Mod+R { switch-preset-column-width; }
+        Mod+F { maximize-column; }
+        // Toggle between floating and tiling; switch focus between floating and tiling.
+        Mod+V { toggle-window-floating; }
+        Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     }
 
     layout {
