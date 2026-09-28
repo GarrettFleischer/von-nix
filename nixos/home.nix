@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -17,7 +22,6 @@
       vi = "nvim";
       btw = "echo i use nixos btw";
       nrs = "sudo nixos-rebuild switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
-      nhs = "home-manager switch --flake /home/von/dotfiles/nixos#nixos && source ~/.bashrc";
       nec = "nvim /home/von/dotfiles/nixos/configuration.nix";
       neh = "nvim /home/von/dotfiles/nixos/home.nix";
     };
@@ -64,7 +68,7 @@
     }
 
     output "eDP-1" {
-        mode "1920x1080@60.000"
+        mode "2560x1440@60.000"
         scale 1.0
     }
 
@@ -73,7 +77,7 @@
     workspace "c"
 
     binds {
-        Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+        Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
         Mod+Q { close-window; }
         Mod+Shift+E { quit; }
 
@@ -110,7 +114,7 @@
         // Open the Overview (zoomed-out view of workspaces and windows).
         Mod+O repeat=false { toggle-overview; }
         // Show the "Important Hotkeys" overlay.
-        Mod+Shift+Slash { show-hotkey-overlay; }
+        Mod+Space { show-hotkey-overlay; }
         // Switch workspace up/down.
         Mod+U { focus-workspace-down; }
         Mod+I { focus-workspace-up; }
@@ -132,7 +136,6 @@
         gaps 5
         default-column-width { proportion 0.5; }
         always-center-single-column
-        focus-scroll
         focus-ring {
             width 1.5
             active-color "#7fc8ff"
@@ -177,7 +180,6 @@
         place-within-backdrop true
     }
   '';
-
 
   # ~/.config/alacritty/alacritty.yml — frosted-glass terminal, Tokyo-Night.
   # Semi-transparent so niri's xray/blur frosts the wallpaper behind it,
