@@ -148,6 +148,9 @@
         geometry-corner-radius 0
         clip-to-geometry true
     }
+    window-rule {
+        draw-border-with-background false
+    }
 
     window-rule {
         // Frosted-glass: blur the wallpaper behind semi-transparent windows & popups.
