@@ -189,7 +189,7 @@
 
     [colors.primary]
     background = "0x1e1b2b"
-    foreground = "0xc0c3ce"
+    foreground = "0xffffff"
   '';
   # ~/.config/noctalia/config.toml
   xdg.configFile."noctalia/config.toml".text = ''
