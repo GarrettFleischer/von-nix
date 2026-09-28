@@ -34,6 +34,10 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # VMware virtual NICs (E1000 / VMXNET3).
+  boot.initrd.availableKernelModules = [ "e1000" "vmxnet3" ];
+  boot.kernelModules = [ "e1000" "vmxnet3" ];
+
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
 
