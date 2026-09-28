@@ -181,19 +181,15 @@
     }
   '';
 
-  # ~/.config/alacritty/alacritty.yml — frosted-glass terminal, Tokyo-Night.
-  # Semi-transparent so niri's xray/blur frosts the wallpaper behind it,
-  # in the same palette as Noctalia.
-  xdg.configFile."alacritty/alacritty.yml".text = ''
-    window:
-      decorations: false
-      title: false
-      border_width: 0
-      opacity: 0.5
+  # ~/.config/alacritty/alacritty.toml — frosted-glass terminal, Tokyo-Night.
+  xdg.configFile."alacritty/alacritty.toml".text = ''
+    [window]
+    decorations = "none"
+    opacity = 0.5
 
-    colors:
-      primary: 0x1e1b2b
-      foreground: 0xc0c3ce
+    [colors.primary]
+    background = "0x1e1b2b"
+    foreground = "0xc0c3ce"
   '';
   # ~/.config/noctalia/config.toml
   xdg.configFile."noctalia/config.toml".text = ''
