@@ -137,8 +137,8 @@
         default-column-width { proportion 0.5; }
         always-center-single-column
         focus-ring {
-            width 0
-            active-color "#ffffffaa"
+            width 1.5
+            active-color "#7fc8ff"
             inactive-color "#505050"
         }
         border { off; }
