@@ -94,10 +94,10 @@
             spawn-sh "noctalia msg session lock";
         }
 
-        Mod+h  { focus-column-left; }
-        Mod+l { focus-column-right; }
-        Mod+k    { focus-window-up; }
-        Mod+j  { focus-window-down; }
+        Ctrl+h  { focus-column-left; }
+        Ctrl+l { focus-column-right; }
+        Ctrl+k    { focus-window-up; }
+        Ctrl+j  { focus-window-down; }
 
         Mod+Shift+h  { move-column-left; }
         Mod+Shift+l { move-column-right; }
