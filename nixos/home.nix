@@ -189,7 +189,7 @@
       decorations: false
       title: false
       border_width: 0
-      opacity: 0.9
+      opacity: 0.5
 
     colors:
       primary: 0x1e1b2b
