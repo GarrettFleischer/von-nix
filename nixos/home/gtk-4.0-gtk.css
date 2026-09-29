@@ -1,0 +1,87 @@
+/* ~/.config/gtk-4.0/gtk.css — Tokyo-Night glass theme (GTK4 syntax) */
+
+:root {
+  --accent-bg-color:    #7fc8ff;
+  --accent-fg-color:    #1e1b2e;
+  --window-bg-color:    rgba(30, 27, 46, 0.55);
+  --window-fg-color:    #cdd6f4;
+  --view-bg-color:      rgba(30, 27, 46, 0.55);
+  --view-fg-color:      #cdd6f4;
+  --headerbar-bg-color: rgba(36, 31, 61, 0.55);
+  --headerbar-fg-color: #cdd6f4;
+  --popover-bg-color:   rgba(30, 27, 46, 0.60);
+  --popover-fg-color:   #cdd6f4;
+  --card-bg-color:      rgba(36, 31, 61, 0.55);
+  --card-fg-color:      #cdd6f4;
+  --sidebar-bg-color:   rgba(36, 31, 61, 0.55);
+  --sidebar-fg-color:   #cdd6f4;
+  --sidebar-border-color: rgba(127, 200, 255, 0.20);
+  --shade-color:        rgba(0, 0, 0, 0.30);
+}
+
+/* Glass for every top-level window */
+window {
+  background-color: var(--window-bg-color);
+}
+
+headerbar {
+  background-color: var(--headerbar-bg-color);
+  color:            var(--headerbar-fg-color);
+  border-bottom:    1px solid rgba(127, 200, 255, 0.18);
+}
+
+sidebar {
+  background-color: var(--sidebar-bg-color);
+  color:            var(--sidebar-fg-color);
+  border-right:     1px solid var(--sidebar-border-color);
+}
+
+/* List / file view transparency */
+.list,
+.tree-view {
+  background-color: var(--view-bg-color);
+  color:            var(--view-fg-color);
+}
+
+/* Selection */
+.list-row:selected,
+.tree-view-row:selected {
+  background-color: rgba(127, 200, 255, 0.20);
+  color:            var(--view-fg-color);
+}
+
+/* Buttons */
+button {
+  background-color: var(--card-bg-color);
+  color:            var(--card-fg-color);
+  border:           1px solid rgba(127, 200, 255, 0.18);
+  border-radius:    8px;
+}
+button:hover {
+  background-color: rgba(127, 200, 255, 0.12);
+}
+
+/* Entries */
+entry {
+  background-color: var(--window-bg-color);
+  color:            var(--window-fg-color);
+  border:           1px solid rgba(127, 200, 255, 0.18);
+  border-radius:    8px;
+}
+
+/* Popover / menu */
+popover {
+  background-color: var(--popover-bg-color);
+  color:            var(--popover-fg-color);
+  border:           1px solid rgba(127, 200, 255, 0.18);
+  border-radius:    8px;
+}
+
+/* Scrollbar */
+scrollbar {
+  background-color: var(--window-bg-color);
+}
+scrollbar slider {
+  background-color: var(--accent-bg-color);
+  border-radius:    4px;
+}

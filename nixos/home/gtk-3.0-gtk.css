@@ -1,0 +1,182 @@
+/* ~/.config/gtk-3.0/gtk.css — glass + Tokyo-Night
+ * Colors (Tokyo-Night, matching Noctalia's surface stack):
+ *   bg        #1e1b2e   — main window background
+ *   bg-alpha  rgba(30,27,46,0.60) — translucent main BG (wallpaper shows through)
+ *   panel     #241f3d   — sidebar/panel solid color
+ *   panel-alpha rgba(36,31,61,0.55) — translucent panel
+ *   fg        #cdd6f4   — primary text
+ *   fg-dim    #9399b2   — dim/secondary text
+ *   accent    #7fc8ff   — selection/accent
+ */
+
+:root {
+  --bg:        #1e1b2e;
+  --bg-alpha:  rgba(30, 27, 46, 0.60);
+  --panel:     #241f3d;
+  --panel-alpha: rgba(36, 31, 61, 0.55);
+  --fg:        #cdd6f4;
+  --fg-dim:    #9399b2;
+  --accent:    #7fc8ff;
+  --selected:  #7fc8ff;
+  --border:    rgba(127, 200, 255, 0.18);
+}
+
+/* Global window: let the wallpaper show through */
+window {
+  background-color: var(--bg-alpha);
+  color:            var(--fg);
+}
+
+/* Header bar (Thunar window title + toolbar) */
+.header-bar,
+.titlebar,
+.titlebar-backdrop {
+  background-color: var(--panel-alpha);
+  color:            var(--fg);
+  border-bottom:    1px solid var(--border);
+}
+
+/* Sidebar */
+.sidebar,
+.sidebar .row,
+#sidebar-tree,
+.sidebar-button {
+  background-color: var(--panel-alpha);
+  color:            var(--fg);
+}
+.sidebar .row:selected,
+.sidebar .row:active {
+  background-color: rgba(127, 200, 255, 0.20);
+  color:            var(--fg);
+}
+
+/* Main view / file list */
+.view,
+.view:selected,
+.cell,
+.cell:selected,
+.treeview {
+  background-color: var(--bg-alpha);
+  color:            var(--fg);
+}
+.view:selected,
+.cell:selected {
+  background-color: rgba(127, 200, 255, 0.18);
+  color:            var(--fg);
+}
+
+/* Buttons & entries */
+button,
+.button,
+entry,
+.entry {
+  background-color: var(--panel-alpha);
+  color:            var(--fg);
+  border:           1px solid var(--border);
+  border-radius:    8px;
+}
+button:hover,
+.button:hover {
+  background-color: rgba(127, 200, 255, 0.12);
+}
+
+/* Menus / popovers */
+menu,
+.menu,
+.popover {
+  background-color: var(--bg-alpha);
+  color:            var(--fg);
+  border:           1px solid var(--border);
+  border-radius:    8px;
+}
+.menuitem,
+.menu .menuitem {
+  background-color: transparent;
+  color:            var(--fg);
+}
+.menuitem:hover {
+  background-color: rgba(127, 200, 255, 0.12);
+}
+
+/* Status bar / bottom panel */
+.status-bar,
+.statusbar {
+  background-color: var(--panel-alpha);
+  color:            var(--fg-dim);
+  border-top:       1px solid var(--border);
+}
+
+/* Scroll bars */
+scrollbar,
+.scrollbar {
+  background-color: var(--bg-alpha);
+}
+scrollbar slider,
+.scrollbar slider {
+  background-color: var(--accent);
+  border-radius:    4px;
+}
+
+/* Selection in tree / list */
+treeview row:selected,
+.view row:selected,
+.cell:selected {
+  background-color: rgba(127, 200, 255, 0.18);
+  color:            var(--fg);
+}
+
+/* Thunar-specific: path bar */
+#pathbar-box,
+.path-bar,
+.path-bar button {
+  background-color: var(--panel-alpha);
+  color:            var(--fg);
+  border-bottom:    1px solid var(--border);
+}
+.path-bar button:hover {
+  background-color: rgba(127, 200, 255, 0.12);
+}
+
+/* Thunar-specific: location bar */
+#location-bar,
+.entry.location {
+  background-color: var(--bg-alpha);
+  color:            var(--fg);
+  border:           1px solid var(--border);
+  border-radius:    8px;
+}
+
+/* Thunar-specific: places / shortcut view */
+#places-view,
+.sidebar .row.separator {
+  background-color: transparent;
+}
+.sidebar .row.separator {
+  border-color: var(--border);
+}
+
+/* Scrollbar groove / trough */
+scrollbar trough,
+.scrollbar trough {
+  background-color: transparent;
+}
+
+/* Print dialog / native dialogs */
+dialog,
+.dialog {
+  background-color: var(--bg-alpha);
+  color:            var(--fg);
+  border:           1px solid var(--border);
+  border-radius:    12px;
+}
+
+/* Overshoot / scrollable indicator */
+.overshoot {
+  background:      none;
+}
+
+/* Ensure selection stays visible on hover */
+:selected {
+  background-color: var(--selected);
+  color:            var(--fg);
+}

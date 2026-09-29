@@ -1,0 +1,92 @@
+# ~/.config/noctalia/config.toml
+
+[theme]
+mode = "dark"
+source = "builtin"
+builtin = "Tokyo-Night"
+
+[shell]
+font_family = "JetBrainsMono Nerd Font Propo"
+
+[shell.panel]
+# Frosted-glass shell: semi-transparent bar/launcher/cards over the wallpaper.
+transparency_mode = "glass"
+
+# ── Bar: vertical on the left side ──
+# position | top | bottom | left | right
+# When left/right, thickness = bar width in px.
+[bar.main]
+position           = "left"
+thickness          = 40           # bar width (was 60)
+background_opacity = 0.85         # glass bar: semi-transparent so wallpaper shows through
+radius             = 6
+margin_ends        = 0            # full-height bar — no inset from top/bottom
+margin_edge        = 0            # flush to screen edge — no gap for windows to sneak into
+padding            = 14
+widget_spacing     = 6
+scale              = 1.0
+font_scale         = 1.0
+shadow             = true
+auto_hide          = false
+reserve_space      = true
+capsule            = false
+
+# left-bar widget flow: top-to-bottom sections
+start  = ["launcher", "wallpaper", "workspaces"]
+center = ["clock", "thepunkoff/pomodoro:widget"]
+end    = ["media", "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "control-center", "session"]
+
+[wallpaper]
+directory = "~/.config/wallpapers"
+
+[backdrop]
+enabled = true
+blur_intensity = 0.7
+tint_intensity = 0.2
+
+# ── Plugins ──────────────────────────────────────────────────────────────
+# Pomodoro Timer (community) — work / short-break / long-break cycles.
+# https://github.com/noctalia-dev/community-plugins/tree/main/pomodoro
+#
+# Bar widget (thepunkoff/pomodoro:widget) sits directly below the clock
+# on the left bar, showing status + remaining time when the panel is closed.
+# Click the widget / run `noctalia msg panel-toggle thepunkoff/pomodoro:panel`
+# to open the panel for manual start/pause and duration adjustments.
+#
+# Dependencies: ffplay (for the alarm sound). Bundled in nixpkgs.
+[plugins]
+enabled = ["thepunkoff/pomodoro"]
+
+# Pomodoro durations (minutes). The plugin cycles through N sessions:
+# sessions 1..N-1 get short breaks, session N gets a long break.
+# With work=120, short=10, long=30, sessions-before-long-break=2:
+#   2h work → 10m break → 2h work → 30m break → repeat
+# The plugin always puts the long break on the last session.
+# To change durations: edit here, then `noctalia msg config-reload`.
+[plugin_settings."thepunkoff/pomodoro"]
+work-duration = 120
+short-break-duration = 10
+long-break-duration = 30
+sessions-before-long-break = 2
+# auto-start-breaks = false   # auto-start break when work finishes
+# auto-start-work = false     # auto-start work when break finishes
+# enable-work-timer-sound = false
+# use-bundled-alarm-sound = false
+
+# ── Vim-style keybindings for Noctalia panels ─────────────────────────────
+# Remaps vim motion keys to Noctalia's UI navigation actions.
+# Works in the pomodoro panel (and all other Noctalia panels):
+#   h/j/k/l  — navigate left/down/up/right between buttons
+#   Enter    — activate selected button (start/pause/skip/reset)
+#   Escape   — close the panel
+#   Tab      — move to next input field (if any)
+[keybinds]
+left = ["h"]
+right = ["l"]
+up = ["k"]
+down = ["j"]
+validate = ["return", "kp_enter", "space"]
+cancel = ["escape"]
+tab_next = ["tab"]
+tab_previous = ["shift+tab"]
+
