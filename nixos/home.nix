@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ pkgs, inputs, ... }: {
   imports = [
     ./neovim.nix
     ./tmux.nix
@@ -33,7 +33,7 @@
     };
 
     initExtra = ''
-      PS1='\t \[\\e[38;5;34m\\]\\u\\[\\e[0m\\] in \[\\e[38;5;33m\\]\\w\\[\\e[0m\\] \\\\$ '
+      PS1='\t [\e[38;5;34m]\u[\e[0m] in [\e[38;5;33m]\w[\e[0m] \$\u' 
     '';
   };
 
@@ -58,7 +58,7 @@
   home.sessionVariables = {
     # Cursor theme — fixes double-cursor issue (bibata-cursors shipped above).
     XCURSOR_THEME = "Bibata-Modern-Ice";
-    XCURSOR_SIZE  = "24";
+    XCURSOR_SIZE = "24";
   };
 
   # ── App config files (extracted from inline text blobs; each file is
@@ -77,7 +77,7 @@
   #   home/gtk-3.0-settings.ini  (theme/cursor selection)
   #   home/gtk-3.0-gtk.css       (glass + Tokyo-Night overrides)
   xdg.configFile."gtk-3.0/settings.ini".source = ./home/gtk-3.0-settings.ini;
-  xdg.configFile."gtk-3.0/gtk.css".source     = ./home/gtk-3.0-gtk.css;
+  xdg.configFile."gtk-3.0/gtk.css".source = ./home/gtk-3.0-gtk.css;
 
   # GTK 4 — same spirit, GTK4 syntax. See: home/gtk-4.0-gtk.css
   xdg.configFile."gtk-4.0/gtk.css".source = ./home/gtk-4.0-gtk.css;

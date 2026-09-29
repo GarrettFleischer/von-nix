@@ -50,9 +50,17 @@ tint_intensity = 0.2
 #
 # Bar widget (thepunkoff/pomodoro:widget) sits directly below the clock
 # on the left bar, showing status + remaining time when the panel is closed.
-# Click the widget / run `noctalia msg panel-toggle thepunkoff/pomodoro:panel`
-# to open the panel for manual start/pause and duration adjustments.
 #
+# Click the widget / run `noctalia msg panel-toggle thepunkoff/pomodoro:panel`
+# to open the panel. The panel shows Start/Pause, Skip, Reset, and Reset All
+# buttons — use the mouse to click them (the plugin does NOT declare
+# keyboard_focus, so shell keybinds like h/j/k/l don't reach the panel).
+#
+# There is NO text input in the panel for typing durations like "3h" or "25m".
+# Durations are integer minutes configured below. To change a duration:
+#   1. Edit the value on the lines below (minutes, not hours).
+#   2. Run:  noctalia msg config-reload
+#   3. Click Reset All in the panel to restart the cycle with new durations.
 # Dependencies: ffplay (for the alarm sound). Bundled in nixpkgs.
 [plugins]
 enabled = ["thepunkoff/pomodoro"]
@@ -75,11 +83,19 @@ sessions-before-long-break = 2
 
 # ── Vim-style keybindings for Noctalia panels ─────────────────────────────
 # Remaps vim motion keys to Noctalia's UI navigation actions.
-# Works in the pomodoro panel (and all other Noctalia panels):
-#   h/j/k/l  — navigate left/down/up/right between buttons
-#   Enter    — activate selected button (start/pause/skip/reset)
-#   Escape   — close the panel
-#   Tab      — move to next input field (if any)
+#
+# NOTE: These shell-level keybinds only work in Noctalia's built-in panels
+# (launcher, session, clipboard, wallpaper, settings, control center).
+# They do NOT work in the Pomodoro panel — the Pomodoro plugin's manifest
+# (plugin.toml) does not declare keyboard_focus, so Noctalia never routes
+# shell keybinds to it. Use the mouse to click buttons in the pomodoro panel
+# until the plugin adds keyboard_focus support.
+#
+# These bindings still apply to NOCTALIA'S OWN panels:
+#   h/j/k/l → navigate left/down/up/right between buttons
+#   Enter   → activate selected button
+#   Escape  → close the panel
+#   Tab     → move to next input field
 [keybinds]
 left = ["h"]
 right = ["l"]
