@@ -2,10 +2,12 @@
 -- @fileoverview Bar widget for the pomodoro clocks.
 -- @module von/pomodoro/widget
 --
--- A vertical bar is only as wide as its thickness, so the time is one
--- two-digit line per unit (hours, minutes, seconds) instead of 120:00.
+-- Side bars stack time with newlines inside one label (same approach as the
+-- community pomodoro widget). barWidget.isVertical() is read from update()
+-- so the first paint happens after the bar orientation is known.
 
 local snap = nil
+local isVertical = false
 
 --- @brief Read the latest flat state published by the service.
 local function pull()
@@ -21,62 +23,61 @@ local function pull()
 	}
 end
 
---- @brief Two-digit pieces, hours included only when the clock is past 59:59.
+--- @brief Time string for the bar capsule (stacked or inline).
 --- @param seconds number
---- @return {string}
-local function parts(seconds)
+--- @param mark string `W` or `R`
+--- @return string
+local function barTimeText(seconds, mark)
 	seconds = math.max(0, math.floor(seconds or 0))
 	local hours = seconds // 3600
 	local mins = (seconds % 3600) // 60
 	local secs = seconds % 60
-	if hours > 0 then
-		return {
-			string.format("%02d", hours),
-			string.format("%02d", mins),
-			string.format("%02d", secs),
-		}
+
+	if isVertical then
+		local stacked
+		if hours == 0 then
+			stacked = string.format("%02d\n%02d", mins, secs)
+		else
+			stacked = string.format("%02d\n%02d\n%02d", hours, mins, secs)
+		end
+		return mark .. "\n" .. stacked
 	end
-	return {
-		string.format("%02d", mins),
-		string.format("%02d", secs),
-	}
+
+	if hours == 0 then
+		return mark .. " " .. string.format("%02d:%02d", mins, secs)
+	end
+	return mark .. " " .. string.format("%d:%02d:%02d", hours, mins, secs)
 end
 
 --- @brief Draw the bar capsule from the latest snap.
 local function render()
+	isVertical = barWidget.isVertical()
 	pull()
 	local phase = (snap and snap.phase) or "work"
 	local running = snap and snap.status == "running"
 	local color = if running then "primary" else "on_surface"
 	local mark = if phase == "rest" then "R" else "W"
 	local seconds = snap and snap.remaining or 0
+	local container = if isVertical then ui.column else ui.row
 
-	if barWidget.isVertical() then
-		local lines = {
-			ui.label({ text = mark, color = color, textAlign = "center" }),
-		}
-		for index, line in ipairs(parts(seconds)) do
-			table.insert(lines, ui.label({
-				key = "line-" .. tostring(index),
-				text = line,
-				color = color,
-				textAlign = "center",
-			}))
-		end
-		barWidget.render(ui.column({ gap = 0, align = "center" }, lines))
-	else
-		local text = mark .. " " .. ((snap and snap.clock) or "0:00")
-		barWidget.render(ui.row({ gap = 0, align = "center" }, {
-			ui.label({ text = text, color = color, textAlign = "center" }),
-		}))
-	end
+	barWidget.render(container({ gap = 4, align = "center", justify = "center" }, {
+		ui.label({
+			text = barTimeText(seconds, mark),
+			color = color,
+			textAlign = "center",
+		}),
+	}))
 
 	local name = if phase == "rest" then "Rest" else "Work"
 	local state = if running then "running" else "paused"
 	barWidget.setTooltip(name .. " " .. ((snap and snap.clock) or "--:--") .. " " .. state)
 end
 
-render()
+--- @brief Noctalia calls this after the widget is placed on a bar.
+function update()
+	isVertical = barWidget.isVertical()
+	render()
+end
 
 noctalia.state.watch("rev", function()
 	render()
