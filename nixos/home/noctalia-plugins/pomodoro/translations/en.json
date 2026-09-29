@@ -1,0 +1,6 @@
+{
+  "settings.work_minutes.label": "Work minutes",
+  "settings.work_minutes.description": "Length of the work clock the first time the timer starts. Editing with i in the panel saves over this.",
+  "settings.rest_minutes.label": "Rest minutes",
+  "settings.rest_minutes.description": "Length of the rest clock the first time the timer starts. Editing with i in the panel saves over this."
+}

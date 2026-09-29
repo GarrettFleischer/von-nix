@@ -33,7 +33,7 @@ capsule            = false
 
 # left-bar widget flow: top-to-bottom sections
 start  = ["launcher", "wallpaper", "workspaces"]
-center = ["clock", "thepunkoff/pomodoro:widget"]
+center = ["clock", "von/pomodoro:widget"]
 end    = ["media", "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "brightness", "battery", "control-center", "session"]
 
 [wallpaper]
@@ -45,57 +45,42 @@ blur_intensity = 0.7
 tint_intensity = 0.2
 
 # ── Plugins ──────────────────────────────────────────────────────────────
-# Pomodoro Timer (community) — work / short-break / long-break cycles.
-# https://github.com/noctalia-dev/community-plugins/tree/main/pomodoro
-#
-# Bar widget (thepunkoff/pomodoro:widget) sits directly below the clock
-# on the left bar, showing status + remaining time when the panel is closed.
-#
-# Click the widget / run `noctalia msg panel-toggle thepunkoff/pomodoro:panel`
-# to open the panel. The panel shows Start/Pause, Skip, Reset, and Reset All
-# buttons — use the mouse to click them (the plugin does NOT declare
-# keyboard_focus, so shell keybinds like h/j/k/l don't reach the panel).
-#
-# There is NO text input in the panel for typing durations like "3h" or "25m".
-# Durations are integer minutes configured below. To change a duration:
-#   1. Edit the value on the lines below (minutes, not hours).
-#   2. Run:  noctalia msg config-reload
-#   3. Click Reset All in the panel to restart the cycle with new durations.
-# Dependencies: ffplay (for the alarm sound). Bundled in nixpkgs.
+# Local pomodoro (nixos/home/noctalia-plugins/pomodoro).
+# Mod+p opens the panel. Inside it:
+#   j / k   rest / work
+#   i       edit that clock's length (25, 25m, 90s, 2h, 1:30)
+#   Enter   commit the length and leave the field
+#   space   start / pause
+#   r       rewind the showing clock
+#   Escape  close
+# The bar widget under the clock shows W or R and the time left.
+# Lengths edited with i are saved under Noctalia's plugin data dir and
+# win over the minute defaults below on the next start.
 [plugins]
-enabled = ["thepunkoff/pomodoro"]
+enabled = ["von/pomodoro"]
 
-# Pomodoro durations (minutes). The plugin cycles through N sessions:
-# sessions 1..N-1 get short breaks, session N gets a long break.
-# With work=120, short=10, long=30, sessions-before-long-break=2:
-#   2h work → 10m break → 2h work → 30m break → repeat
-# The plugin always puts the long break on the last session.
-# To change durations: edit here, then `noctalia msg config-reload`.
-[plugin_settings."thepunkoff/pomodoro"]
-work-duration = 120
-short-break-duration = 10
-long-break-duration = 30
-sessions-before-long-break = 2
-# auto-start-breaks = false   # auto-start break when work finishes
-# auto-start-work = false     # auto-start work when break finishes
-# enable-work-timer-sound = false
-# use-bundled-alarm-sound = false
+[[plugins.source]]
+name = "local"
+kind = "path"
+location = "/home/von/dotfiles/nixos/home/noctalia-plugins"
+enabled = true
+
+[plugin_settings."von/pomodoro"]
+work_minutes = 120
+rest_minutes = 10
+panel_placement = "attached"
+panel_position = "auto"
+panel_open_near_click = true
 
 # ── Vim-style keybindings for Noctalia panels ─────────────────────────────
 # Remaps vim motion keys to Noctalia's UI navigation actions.
-#
-# NOTE: These shell-level keybinds only work in Noctalia's built-in panels
-# (launcher, session, clipboard, wallpaper, settings, control center).
-# They do NOT work in the Pomodoro panel — the Pomodoro plugin's manifest
-# (plugin.toml) does not declare keyboard_focus, so Noctalia never routes
-# shell keybinds to it. Use the mouse to click buttons in the pomodoro panel
-# until the plugin adds keyboard_focus support.
-#
-# These bindings still apply to NOCTALIA'S OWN panels:
+# These apply to Noctalia's own panels (launcher, session, clipboard,
+# wallpaper, settings, control center):
 #   h/j/k/l → navigate left/down/up/right between buttons
 #   Enter   → activate selected button
 #   Escape  → close the panel
 #   Tab     → move to next input field
+# The pomodoro panel captures j, k, i, r, and space itself.
 [keybinds]
 left = ["h"]
 right = ["l"]

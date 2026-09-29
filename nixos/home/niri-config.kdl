@@ -87,7 +87,7 @@ binds {
     // Switch preset column width; maximize the column.
     Mod+R { switch-preset-column-width; }
     Mod+F { maximize-column; }
-    Mod+p hotkey-overlay-title="Pomodoro" { spawn-sh "noctalia msg panel-toggle thepunkoff/pomodoro:panel"; }
+    Mod+p hotkey-overlay-title="Pomodoro" { spawn-sh "noctalia msg panel-toggle von/pomodoro:panel"; }
     // Toggle between floating and tiling; switch focus between floating and tiling.
     Mod+V { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
