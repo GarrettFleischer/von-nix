@@ -31,6 +31,10 @@ Every key below is taken from `nixos/home.nix` → `~/.config/niri/config.kdl`, 
 | `Mod+D` | Open the **launcher** (Noctalia) |
 | `Mod+S` | Open the **Control Center** (Noctalia) |
 | `Mod+Comma` | Open **Noctalia Settings** |
+| `Mod+M` | Open **YouTube Music** (`alacritty -e ytm`) |
+| `Mod+Shift+T` | Open **btop** (`alacritty -e btop`) |
+| `Mod+W` | Open the **Wallhaven** browser |
+| `Mod+Shift+W` | Open the **video wallpaper** picker |
 | `Super+Alt+L` | **Lock the screen** |
 | `Mod+Shift+Slash` | Show the **hotkey overlay** (niri's "important hotkeys") |
 
@@ -40,11 +44,11 @@ Tip: `Mod+Shift+Slash` is the fastest way to remember the full list — it's alw
 
 From the same config:
 
-- `gaps 5` between windows.
+- `gaps 12` between windows.
 - `default-column-width { proportion 0.5 }` — two equal columns.
 - `always-center-single-column` — a lone window on a workspace opens **centered** (not left).
-- Window `geometry-corner-radius 4`, clipped to its geometry.
-- Focus ring: 1.5px wide, active color `#7fc8ff`.
+- Window `geometry-corner-radius 8`, clipped to its geometry.
+- Focus ring and border are off.
 
 ## Workspaces
 

@@ -48,12 +48,22 @@ in {
   home.packages = with pkgs; [
     alacritty
     bat
+    # Live system monitor. Noctalia already ships a btop theme template.
+    btop
     bibata-cursors
     fuzzel
     gnome-keyring
     libsecret
+    # Video wallpapers (mpvpaper) and ytm-player's audio backend.
+    mpv
+    mpvpaper
+    # wallpaper_depth installs its model with these on PATH.
+    python3
+    uv
     swaybg
     xdg-utils
+    # Flake overlay in nixos/flake.nix. Core build includes MPRIS and album art.
+    ytm-player
   ];
 
   # ── Browser ──────────────────────────────────────────────────────────────

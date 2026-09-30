@@ -17,6 +17,10 @@ These are remapped in `~/.config/niri/config.kdl` via `noctalia msg …`:
 | `Mod+D` | Open the **launcher** (`noctalia msg panel-toggle launcher`) |
 | `Mod+S` | Open the **Control Center** (`noctalia msg panel-toggle control-center`) |
 | `Mod+Comma` | Open **Noctalia Settings** (`noctalia msg settings-toggle`) |
+| `Mod+M` | Open **YouTube Music** in Alacritty (`ytm`) |
+| `Mod+Shift+T` | Open **btop** in Alacritty |
+| `Mod+W` | Open the **Wallhaven** browser (`noctalia msg panel-toggle noctalia/wallhaven:browser`) |
+| `Mod+Shift+W` | Open the **video wallpaper** picker (`noctalia msg panel-toggle noctalia/mpvpaper:picker`) |
 | `Super+Alt+L` | **Lock the screen** (`noctalia msg session lock`) |
 
 Everything else follows Noctalia's default keybindings (GNOME-like). See the
@@ -40,8 +44,27 @@ From `~/.config/noctalia/config.toml`:
 | Theme source | `builtin` | `builtin` / `custom` |
 | Built-in theme | `Tokyo-Night` | any built-in name |
 | Shell font | `JetBrainsMono Nerd Font Propo` | any installed font |
-| Wallpaper dir | `~/.config/wallpapers` | path to image files |
+| Wallpaper dir | `/home/von/dotfiles/wallpapers` | path to image files |
+| Wallpaper fill | `crop` | `center` / `crop` / `fit` / `stretch` / `repeat` / `span` |
+| Wallpaper transitions | fade, wipe, disc, stripes, zoom, honeycomb (1200ms, one picked at random) | `[wallpaper].transition` |
 | Backdrop | `enabled = true` | `true` / `false` |
+
+## Bar, desktop, and plugins
+
+Left bar, top to bottom in the middle: clock, a short audio spectrum (`audio-vis`), the bongo cat, then the pomodoro widget. The cat taps and flashes only while an MPRIS player is playing. Wallhaven and the video-wallpaper glyphs sit with the local wallpaper picker at the top of the bar. Just under that, CPU and RAM gauges show percent. Hover either gauge for the rest of the sampled stats, including RAM in GiB.
+
+On `Virtual-1`, the top-left holds scrolling CPU and RAM graphs. The right gutter holds a now-playing card and a circular `bars_rings` visualizer, both hidden when nothing is playing.
+
+Enabled plugins, besides `von/pomodoro`:
+
+| Plugin | What |
+|---|---|
+| `noctalia/wallhaven` | Search Wallhaven and download into `~/.local/share/wallpapers` |
+| `noctalia/mpvpaper` | Video wallpapers (`mp4`, `webm`, `mkv`, `mov`, `gif`) from `~/Videos` |
+| `noctalia/bongocat` | The bar cat |
+| `noctalia/wallpaper_depth` | Depth masks so desktop widgets sit behind a still wallpaper |
+
+Depth needs a one-time model install: `noctalia msg panel-toggle noctalia/wallpaper_depth:manager`, then Install model. YouTube Music is `ytm` in a terminal; the first run is `ytm setup`.
 
 ## Changing something
 
@@ -73,6 +96,9 @@ restart needed.
 - Hand-edited keys the GUI has touched are shadowed; to check: temporarily
   move `settings.toml` from the state dir, or run `noctalia config validate`
   (newer versions flag overridden keys).
+- `plugins.enabled`, `wallpaper.directory`, and `wallpaper.fill_mode` were
+  removed from the state file once so the managed `config.toml` is what
+  applies. Putting them back in the GUI shadows the managed values again.
 - Snapshot UI settings into dotfiles:
   ```sh
   noctalia config export > /home/von/dotfiles/nixos/noctalia-ui-settings.toml

@@ -88,25 +88,25 @@ binds {
     Mod+R { switch-preset-column-width; }
     Mod+F { maximize-column; }
     Mod+p hotkey-overlay-title="Pomodoro" { spawn-sh "noctalia msg panel-toggle von/pomodoro:panel"; }
+    Mod+M hotkey-overlay-title="YouTube Music" { spawn-sh "alacritty -e ytm"; }
+    Mod+Shift+T hotkey-overlay-title="System Monitor" { spawn-sh "alacritty -e btop"; }
+    Mod+W hotkey-overlay-title="Wallhaven" { spawn-sh "noctalia msg panel-toggle noctalia/wallhaven:browser"; }
+    Mod+Shift+W hotkey-overlay-title="Video Wallpaper" { spawn-sh "noctalia msg panel-toggle noctalia/mpvpaper:picker"; }
     // Toggle between floating and tiling; switch focus between floating and tiling.
     Mod+V { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 }
 
 layout {
-    gaps 0
+    gaps 12
     default-column-width { proportion 0.5; }
     always-center-single-column
-    focus-ring {
-        width 1.5
-        active-color "#7fc8ff"
-        inactive-color "#505050"
-    }
+    focus-ring { off; }
     border { off; }
 }
 
 window-rule {
-    geometry-corner-radius 0
+    geometry-corner-radius 8
     clip-to-geometry true
 }
 window-rule {
