@@ -188,7 +188,7 @@ local function switchTo(which)
 	publish()
 end
 
---- @brief Replace a phase length, rewind that clock, and pause if it is showing.
+--- @brief Set a phase length and its time left. Running timers keep counting.
 --- @param which string `work` or `rest`
 --- @param seconds number
 local function setDuration(which, seconds)
@@ -204,9 +204,6 @@ local function setDuration(which, seconds)
 		restSecs = seconds
 	end
 	setLeft(which, seconds)
-	if phase == which then
-		status = "paused"
-	end
 	saveState()
 	publish()
 end

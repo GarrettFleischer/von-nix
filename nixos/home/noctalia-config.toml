@@ -45,14 +45,14 @@ blur_intensity = 0.7
 tint_intensity = 0.2
 
 # ── Plugins ──────────────────────────────────────────────────────────────
-# Local pomodoro (nixos/home/noctalia-plugins/pomodoro).
+# Local pomodoro (~/.config/noctalia/plugins/pomodoro; deployed by Home Manager).
 # Mod+p opens the panel. Inside it:
 #   j / k   rest / work
 #   i       edit that clock's length (25, 25m, 90s, 2h, 1:30)
 #   Enter   commit the length and leave the field
 #   space   start / pause
 #   r       rewind the showing clock
-#   Escape  close
+#   Escape  close panel (Mod+p toggles); empty Enter cancels edit
 # The bar widget under the clock shows W or R and the time left.
 # Lengths edited with i are saved under Noctalia's plugin data dir and
 # win over the minute defaults below on the next start.
@@ -62,7 +62,7 @@ enabled = ["von/pomodoro"]
 [[plugins.source]]
 name = "local"
 kind = "path"
-location = "/home/von/dotfiles/nixos/home/noctalia-plugins"
+location = "@NOCTALIA_PLUGIN_SOURCE@"
 enabled = true
 
 [plugin_settings."von/pomodoro"]
@@ -90,4 +90,102 @@ validate = ["return", "kp_enter", "space"]
 cancel = ["escape"]
 tab_next = ["tab"]
 tab_previous = ["shift+tab"]
+
+# ── Lock screen ──────────────────────────────────────────────────────────
+# The desktop wallpaper, softened, with a glass clock and a slim password bar.
+# Positions are for the Virtual-1 output (3438×1288). The shell font and the
+# active palette supply type and color, same as the bar.
+[lockscreen]
+enabled = true
+blurred_desktop = false
+transition = ["fade"]
+transition_duration = 1100
+edge_smoothness = 0.5
+blur_intensity = 0.42
+tint_intensity = 0.16
+
+[lockscreen_widgets]
+enabled = true
+schema_version = 2
+widget_order = [
+  "lockscreen-clock",
+  "lockscreen-date",
+  "lockscreen-login-box@Virtual-1",
+]
+
+[lockscreen_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = false
+
+[lockscreen_widgets.widget.lockscreen-clock]
+type = "clock"
+output = "Virtual-1"
+cx = 1719.0
+cy = 390.0
+box_width = 920.0
+box_height = 260.0
+rotation = 0.0
+placement_width = 3438.0
+placement_height = 1288.0
+
+[lockscreen_widgets.widget.lockscreen-clock.settings]
+clock_style = "digital"
+format = "{:%H:%M}"
+center_text = true
+color = "primary"
+font_family = "JetBrainsMono Nerd Font Propo"
+shadow = false
+background = true
+background_color = "surface"
+background_opacity = 0.5
+background_radius = 18.0
+background_padding = 28.0
+
+[lockscreen_widgets.widget.lockscreen-date]
+type = "clock"
+output = "Virtual-1"
+cx = 1719.0
+cy = 590.0
+box_width = 640.0
+box_height = 88.0
+rotation = 0.0
+placement_width = 3438.0
+placement_height = 1288.0
+
+[lockscreen_widgets.widget.lockscreen-date.settings]
+clock_style = "digital"
+format = "{:%A, %B %d}"
+center_text = true
+color = "on_surface"
+font_family = "JetBrainsMono Nerd Font Propo"
+shadow = true
+background = false
+
+[lockscreen_widgets.widget."lockscreen-login-box@Virtual-1"]
+type = "login_box"
+output = "Virtual-1"
+cx = 1719.0
+cy = 1088.0
+box_width = 560.0
+box_height = 72.0
+rotation = 0.0
+placement_width = 3438.0
+placement_height = 1288.0
+
+[lockscreen_widgets.widget."lockscreen-login-box@Virtual-1".settings]
+layout = "compact"
+background_color = "surface"
+background_opacity = 0.62
+background_radius = 14.0
+center_password_text = true
+input_opacity = 0.72
+input_radius = 10.0
+show_caps_lock = true
+show_keyboard_layout = false
+show_login_button = true
+show_media = false
+show_session_buttons = false
+show_unlock_hint = true
+show_weather = false
 

@@ -3,12 +3,13 @@
 -- @module von/pomodoro/panel
 --
 -- j rest, k work, i edit, Enter commits, space starts or pauses, r resets.
--- Escape closes the panel (the shell owns that key).
+-- Escape closes the panel (Mod+p toggles). While editing, empty Enter cancels.
 
 local snap = nil
 local editing = false
 local focusGen = 0
-local shownToken = ""
+local draftText = ""
+local inlineError = ""
 local cmdSeq = 0
 
 --- @brief Send a command the service will run. The counter makes repeats fire.
@@ -88,17 +89,42 @@ end
 local function render()
 	pull()
 	local phase = (snap and snap.phase) or "work"
-	local duration = (snap and snap.duration) or 0
-	local token = phase .. ":" .. tostring(duration)
-	if not editing and token ~= shownToken then
-		shownToken = token
-		focusGen = focusGen + 1
-	end
-
 	local running = snap and snap.status == "running"
 	local clock = (snap and snap.clock) or "--:--"
 	local durationText = (snap and snap.durationText) or ""
 	local clockColor = if running then "primary" else "on_surface"
+	local editPlaceholder = if running then clock else durationText
+
+	local durationRow
+	if editing then
+		local hint = if running
+			then "Time left — Enter saves, empty Enter cancels"
+			else "Duration — Enter saves, empty Enter cancels"
+		durationRow = ui.column({ gap = 4 }, {
+			ui.input({
+				key = "time-" .. tostring(focusGen),
+				value = "",
+				placeholder = editPlaceholder,
+				controlSize = "sm",
+				focus = true,
+				onChange = "onDurationChange",
+				onSubmit = "onSubmit",
+			}),
+			ui.label({
+				text = if inlineError ~= "" then inlineError else hint,
+				fontSize = 11,
+				color = "outline",
+				textAlign = "center",
+			}),
+		})
+	else
+		durationRow = ui.label({
+			text = if running then clock .. " left" else durationText,
+			fontSize = 14,
+			color = "on_surface",
+			textAlign = "center",
+		})
+	end
 
 	panel.render(ui.column({ gap = 8, padding = 16 }, {
 		ui.button({
@@ -128,14 +154,7 @@ local function render()
 			color = "outline",
 			textAlign = "center",
 		}),
-		ui.input({
-			key = "time-" .. tostring(focusGen),
-			value = durationText,
-			placeholder = "25m, 1h, 90s",
-			controlSize = "sm",
-			focus = editing,
-			onSubmit = "onSubmit",
-		}),
+		durationRow,
 		ui.label({
 			text = "j rest   k work   i edit   space   r reset",
 			fontSize = 11,
@@ -148,17 +167,29 @@ end
 --- @brief Leave the text field and show the stored length again.
 local function stopEditing()
 	editing = false
-	shownToken = ""
+	draftText = ""
+	inlineError = ""
+end
+
+--- @brief Enter edit mode with an empty field (replace-style typing).
+local function startEditing()
+	editing = true
+	draftText = ""
+	inlineError = ""
+	focusGen = focusGen + 1
+	render()
 end
 
 --- @brief Panel opened.
 function onOpen()
-	editing = false
-	shownToken = ""
+	stopEditing()
 	render()
 end
 
 noctalia.state.watch("rev", function()
+	if editing then
+		return
+	end
 	render()
 end)
 
@@ -182,12 +213,7 @@ function onKey(chord, pressed)
 		stopEditing()
 		send("toggle")
 	elseif chord == "i" then
-		editing = true
-		focusGen = focusGen + 1
-		if snap then
-			shownToken = snap.phase .. ":" .. tostring(snap.duration)
-		end
-		render()
+		startEditing()
 	end
 end
 
@@ -205,21 +231,33 @@ function onRest()
 	render()
 end
 
+--- @brief Track draft text; re-renders are paused while editing so this stays reliable.
+--- @param text string
+function onDurationChange(text)
+	draftText = text or ""
+	inlineError = ""
+end
+
 --- @brief Enter in the time field. Empty text cancels the edit.
 --- @param text string
 function onSubmit(text)
 	local trimmed = noctalia.string.trim(text or "")
+	if trimmed == "" then
+		trimmed = noctalia.string.trim(draftText)
+	end
 	if trimmed == "" then
 		stopEditing()
 		render()
 		return
 	end
 	local seconds = parseDuration(trimmed)
-	if not seconds or seconds > 24 * 60 * 60 then
-		noctalia.notifyError("Pomodoro", "Use 25, 25m, 90s, 2h, or 1:30")
+	if seconds == nil or seconds < 1 or seconds > 24 * 60 * 60 then
+		inlineError = "Invalid — use 25, 25m, 90s, 1:30, or 2:00:00 (max 24h)"
+		render()
 		return
 	end
 	local which = (snap and snap.phase) or "work"
 	stopEditing()
 	send("duration:" .. which .. ":" .. tostring(math.floor(seconds)))
+	render()
 end

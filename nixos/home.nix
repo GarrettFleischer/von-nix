@@ -1,4 +1,11 @@
-{ pkgs, inputs, ... }: {
+{ config, pkgs, lib, inputs, ... }:
+let
+  noctaliaPluginsDir = "${config.home.homeDirectory}/.config/noctalia/plugins";
+  noctaliaConfig = lib.replaceStrings
+    [ "@NOCTALIA_PLUGIN_SOURCE@" ]
+    [ noctaliaPluginsDir ]
+    (builtins.readFile ./home/noctalia-config.toml);
+in {
   imports = [
     ./neovim.nix
     ./tmux.nix
@@ -43,6 +50,8 @@
     bat
     bibata-cursors
     fuzzel
+    gnome-keyring
+    libsecret
     swaybg
     xdg-utils
   ];
@@ -70,8 +79,10 @@
   # Alacritty — frosted-glass terminal, Tokyo-Night. See home/alacritty.toml.
   xdg.configFile."alacritty/alacritty.toml".source = ./home/alacritty.toml;
 
-  # Noctalia — compositor/launcher. See home/noctalia-config.toml.
-  xdg.configFile."noctalia/config.toml".source = ./home/noctalia-config.toml;
+  # Noctalia — compositor/launcher. See home/noctalia-config.toml (template).
+  # Plugins live under ~/.config/noctalia/plugins; config.toml gets that path at build time.
+  xdg.configFile."noctalia/plugins".source = ./home/noctalia-plugins;
+  xdg.configFile."noctalia/config.toml".text = noctaliaConfig;
 
   # GTK 3 — dark theme + glass transparency for Thunar. See:
   #   home/gtk-3.0-settings.ini  (theme/cursor selection)
@@ -81,4 +92,21 @@
 
   # GTK 4 — same spirit, GTK4 syntax. See: home/gtk-4.0-gtk.css
   xdg.configFile."gtk-4.0/gtk.css".source = ./home/gtk-4.0-gtk.css;
+
+  # GNOME Keyring — Secret Service (org.freedesktop.secrets) for Cursor, Git, browsers.
+  # NixOS enables the wrapped daemon + PAM unlock; this unit starts it in the Niri session.
+  systemd.user.services.gnome-keyring = {
+    Unit = {
+      Description = "GNOME Keyring (secrets, SSH, PKCS#11)";
+      After = [ "graphical-session-pre.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+    Service = {
+      Type = "simple";
+      ExecStart =
+        "/run/wrappers/bin/gnome-keyring-daemon --foreground --components=pkcs11,secrets,ssh";
+      Restart = "on-failure";
+    };
+  };
 }

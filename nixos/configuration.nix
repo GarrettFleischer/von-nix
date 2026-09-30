@@ -124,6 +124,11 @@
   # a systemd user service, so it does not also launch inside the GNOME session.
   programs.niri.enable = true;
 
+  # Secret Service (org.freedesktop.secrets) for apps expecting a OS keychain.
+  # Niri defaults this on; explicit so it stays on if niri options change.
+  services.gnome.gnome-keyring.enable = true;
+  xdg.portal.enable = true;
+
   programs.noctalia = {
     enable = true;
     # NetworkManager, Bluetooth, UPower, and a power-profile service.

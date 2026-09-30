@@ -3,11 +3,11 @@
 -- @module von/pomodoro/widget
 --
 -- Side bars stack time with newlines inside one label (same approach as the
--- community pomodoro widget). barWidget.isVertical() is read from update()
--- so the first paint happens after the bar orientation is known.
+-- community pomodoro widget). Read bar orientation only from update(); the
+-- per-second rev tick must not call barWidget.isVertical() (it can flip).
 
 local snap = nil
-local isVertical = false
+local isVertical = barWidget.isVertical()
 
 --- @brief Read the latest flat state published by the service.
 local function pull()
@@ -51,7 +51,6 @@ end
 
 --- @brief Draw the bar capsule from the latest snap.
 local function render()
-	isVertical = barWidget.isVertical()
 	pull()
 	local phase = (snap and snap.phase) or "work"
 	local running = snap and snap.status == "running"
@@ -75,7 +74,9 @@ end
 
 --- @brief Noctalia calls this after the widget is placed on a bar.
 function update()
-	isVertical = barWidget.isVertical()
+	if barWidget.isVertical() then
+		isVertical = true
+	end
 	render()
 end
 
