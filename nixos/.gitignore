@@ -1,0 +1,3 @@
+# `nix build .#nixos` / `nixos-rebuild build` symlinks
+result
+result-*
